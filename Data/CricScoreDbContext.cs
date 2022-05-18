@@ -1,3 +1,4 @@
+using CricScore.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CricScore.Data;
@@ -9,4 +10,6 @@ public class CricScoreDbContext : DbContext
     {
 
     }
+
+    public DbSet<User> Users => Set<User>();
 }
