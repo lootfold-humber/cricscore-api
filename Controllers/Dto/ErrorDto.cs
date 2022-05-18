@@ -7,5 +7,10 @@ public class ErrorDto
         Message = "An error occurred";
     }
 
+    public ErrorDto(string message)
+    {
+        Message = message;
+    }
+
     public string Message { get; set; }
 }
