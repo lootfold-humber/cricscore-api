@@ -12,4 +12,10 @@ public class CricScoreDbContext : DbContext
     }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<Team> Teams => Set<Team>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Team>().HasIndex(t => t.Name).IsUnique();
+    }
 }
