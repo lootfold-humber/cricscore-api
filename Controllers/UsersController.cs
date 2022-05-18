@@ -45,4 +45,12 @@ public class UsersController : Controller
 
         return Ok(userInDb);
     }
+
+    [HttpGet("available")]
+    public IActionResult CheckEmailAvailability([FromQuery] string email)
+    {
+        var userInDb = _dbContext.Users.SingleOrDefault(u => u.Email == email);
+        var dto = new EmailAvailabilityDto(userInDb == null);
+        return base.Ok(dto);
+    }
 }
