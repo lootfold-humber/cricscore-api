@@ -46,4 +46,23 @@ public class TeamsController : Controller
 
         return Ok(teams);
     }
+
+    [HttpDelete]
+    [Route("{id:int}")]
+    public IActionResult DeleteTeamForUser([FromRoute] int id)
+    {
+        var userId = HttpContext.Request.Headers["userId"].First();
+
+        var teamInDb = _dbContext.Teams.SingleOrDefault(
+            t => t.Id == id && t.UserId == int.Parse(userId));
+        if (teamInDb == null)
+        {
+            return NotFound();
+        }
+
+        _dbContext.Teams.Remove(teamInDb);
+        _dbContext.SaveChanges();
+
+        return Ok();
+    }
 }
