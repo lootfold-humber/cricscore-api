@@ -18,6 +18,7 @@ public class TeamsController : Controller
         _dbContext = dbContext;
     }
 
+    [HttpPost]
     public IActionResult AddTeam([FromBody] Team team)
     {
         var userId = HttpContext.Request.Headers["userId"].First();
@@ -34,5 +35,15 @@ public class TeamsController : Controller
         _dbContext.SaveChanges();
 
         return Created($"/teams/{team.Id}", team);
+    }
+
+    [HttpGet]
+    public IActionResult GetAllForUser()
+    {
+        var userId = HttpContext.Request.Headers["userId"].First();
+
+        var teams = _dbContext.Teams.Where(t => t.UserId == int.Parse(userId));
+
+        return Ok(teams);
     }
 }
