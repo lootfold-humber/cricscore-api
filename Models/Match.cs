@@ -8,6 +8,7 @@ public class Match : BaseModel
     public int? WinningTeamId { get; set; }
     public int UserId { get; set; }
 
+    public virtual Toss? Toss { get; set; }
     public virtual Team? HomeTeam { get; set; }
     public virtual Team? AwayTeam { get; set; }
     public virtual Team? WinningTeam { get; set; }

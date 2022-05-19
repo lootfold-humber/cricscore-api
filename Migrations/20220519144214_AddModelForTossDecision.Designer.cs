@@ -4,6 +4,7 @@ using CricScore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CricScore.Migrations
 {
     [DbContext(typeof(CricScoreDbContext))]
-    partial class CricScoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220519144214_AddModelForTossDecision")]
+    partial class AddModelForTossDecision
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,35 +84,6 @@ namespace CricScore.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Teams");
-                });
-
-            modelBuilder.Entity("CricScore.Models.Toss", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("MatchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TossDecisionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WinningTeamId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MatchId")
-                        .IsUnique();
-
-                    b.HasIndex("TossDecisionId");
-
-                    b.HasIndex("WinningTeamId");
-
-                    b.ToTable("Tosses");
                 });
 
             modelBuilder.Entity("CricScore.Models.TossDecision", b =>
@@ -219,38 +192,6 @@ namespace CricScore.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CricScore.Models.Toss", b =>
-                {
-                    b.HasOne("CricScore.Models.Match", "Match")
-                        .WithOne("Toss")
-                        .HasForeignKey("CricScore.Models.Toss", "MatchId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("CricScore.Models.TossDecision", "TossDecision")
-                        .WithMany()
-                        .HasForeignKey("TossDecisionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CricScore.Models.Team", "WinningTeam")
-                        .WithMany()
-                        .HasForeignKey("WinningTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Match");
-
-                    b.Navigation("TossDecision");
-
-                    b.Navigation("WinningTeam");
-                });
-
-            modelBuilder.Entity("CricScore.Models.Match", b =>
-                {
-                    b.Navigation("Toss");
                 });
 
             modelBuilder.Entity("CricScore.Models.Team", b =>

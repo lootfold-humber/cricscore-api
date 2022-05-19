@@ -61,4 +61,37 @@ public class MatchesController : Controller
     {
         return Ok(_dbContext.Matches);
     }
+
+    [HttpPost("{matchId:int}/start")]
+    [CheckUserIdHeader]
+    public IActionResult StartMatch([FromRoute] int matchId, [FromBody] Toss toss)
+    {
+        var userId = HttpContext.Request.Headers["userId"].First();
+
+        var matchInDb = _dbContext.Matches
+            .SingleOrDefault(m => m.Id == matchId && m.UserId == int.Parse(userId));
+
+        if (matchInDb == null)
+        {
+            return NotFound(new ErrorDto("Match not found."));
+        }
+
+        if (toss.WinningTeamId != matchInDb.AwayTeamId
+            && toss.WinningTeamId != matchInDb.HomeTeamId)
+        {
+            return BadRequest(new ErrorDto("Invalid winning team Id."));
+        }
+
+        var tossDecision = _dbContext.TossDecisions.SingleOrDefault(t => t.Id == toss.TossDecisionId);
+        if (tossDecision == null)
+        {
+            return BadRequest(new ErrorDto("Invalid toss decision."));
+        }
+
+        toss.MatchId = matchId;
+        _dbContext.Tosses.Add(toss);
+        _dbContext.SaveChanges();
+
+        return Ok();
+    }
 }
