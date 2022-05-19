@@ -12,4 +12,8 @@ public class Team : BaseModel
     public int UserId { get; set; }
 
     public virtual User? User { get; set; }
+
+    public virtual ICollection<Match>? HomeMatches { get; set; }
+    public virtual ICollection<Match>? AwayMatches { get; set; }
+    public virtual ICollection<Match>? MatchesWon { get; set; }
 }
