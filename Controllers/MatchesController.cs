@@ -55,4 +55,10 @@ public class MatchesController : Controller
 
         return Created($"/matches/{newMatch.Id}", newMatch);
     }
+
+    [HttpGet]
+    public IActionResult GetAllMatches()
+    {
+        return Ok(_dbContext.Matches);
+    }
 }
