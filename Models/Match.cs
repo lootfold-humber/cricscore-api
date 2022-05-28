@@ -13,4 +13,5 @@ public class Match : BaseModel
     public virtual Team? AwayTeam { get; set; }
     public virtual Team? WinningTeam { get; set; }
     public virtual User? User { get; set; }
+    public virtual ICollection<Score>? Scores { get; set; }
 }

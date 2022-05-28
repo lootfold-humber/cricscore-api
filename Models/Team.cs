@@ -16,4 +16,5 @@ public class Team : BaseModel
     public virtual ICollection<Match>? HomeMatches { get; set; }
     public virtual ICollection<Match>? AwayMatches { get; set; }
     public virtual ICollection<Match>? MatchesWon { get; set; }
+    public virtual ICollection<Score>? Scores { get; set; }
 }

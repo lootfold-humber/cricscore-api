@@ -16,6 +16,7 @@ public class CricScoreDbContext : DbContext
     public DbSet<Match> Matches => Set<Match>();
     public DbSet<TossDecision> TossDecisions => Set<TossDecision>();
     public DbSet<Toss> Tosses => Set<Toss>();
+    public DbSet<Score> Scores => Set<Score>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,5 +54,17 @@ public class CricScoreDbContext : DbContext
         modelBuilder.Entity<TossDecision>().HasData(new List<TossDecision>{
                 new TossDecision{Id = 1, Value = "Bat"},
                 new TossDecision{Id = 2, Value = "Bowl"}});
+
+        modelBuilder.Entity<Score>()
+            .HasOne(s => s.Match)
+            .WithMany(m => m.Scores)
+            .HasForeignKey(s => s.MatchId)
+            .OnDelete(DeleteBehavior.NoAction); ;
+
+        modelBuilder.Entity<Score>()
+            .HasOne(s => s.BattingTeam)
+            .WithMany(t => t.Scores)
+            .HasForeignKey(s => s.BattingTeamId)
+            .OnDelete(DeleteBehavior.NoAction); ;
     }
 }
