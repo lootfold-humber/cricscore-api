@@ -1,3 +1,4 @@
+using CricScore.Controllers.Dto;
 using CricScore.Data;
 using CricScore.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -37,5 +38,18 @@ public class ScoresController : Controller
         _dbContext.SaveChanges();
 
         return Ok();
+    }
+
+    [HttpGet("{matchId:int}")]
+    public IActionResult GetScoreForMatch([FromRoute] int matchId)
+    {
+        var dto = new GetScoreDto();
+
+        dto.FirstInnings = _dbContext.Scores.SingleOrDefault(
+            s => s.MatchId == matchId && s.Innings == 1);
+        dto.SecondInnings = _dbContext.Scores.SingleOrDefault(
+        s => s.MatchId == matchId && s.Innings == 2);
+
+        return Ok(dto);
     }
 }
