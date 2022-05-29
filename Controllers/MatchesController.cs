@@ -94,4 +94,30 @@ public class MatchesController : Controller
 
         return Ok();
     }
+
+    [HttpPost("{matchId:int}/complete")]
+    [CheckUserIdHeader]
+    public IActionResult StartMatch([FromRoute] int matchId, [FromBody] CompleteMatchDto completeMatchDto)
+    {
+        var userId = HttpContext.Request.Headers["userId"].First();
+
+        var matchInDb = _dbContext.Matches
+            .SingleOrDefault(m => m.Id == matchId && m.UserId == int.Parse(userId));
+
+        if (matchInDb == null)
+        {
+            return NotFound(new ErrorDto("Match not found."));
+        }
+
+        if (completeMatchDto.WinningTeamId != matchInDb.AwayTeamId
+            && completeMatchDto.WinningTeamId != matchInDb.HomeTeamId)
+        {
+            return BadRequest(new ErrorDto("Invalid winning team Id."));
+        }
+
+        matchInDb.WinningTeamId = completeMatchDto.WinningTeamId;
+        _dbContext.SaveChanges();
+
+        return Ok();
+    }
 }
