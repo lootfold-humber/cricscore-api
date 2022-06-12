@@ -120,4 +120,24 @@ public class MatchesController : Controller
 
         return Ok();
     }
+
+    [HttpDelete("{matchId:int}")]
+    [CheckUserIdHeader]
+    public IActionResult DeleteMatch([FromRoute] int matchId)
+    {
+        var userId = HttpContext.Request.Headers["userId"].First();
+
+        var matchInDb = _dbContext.Matches
+            .SingleOrDefault(m => m.Id == matchId && m.UserId == int.Parse(userId));
+
+        if (matchInDb == null)
+        {
+            return NotFound(new ErrorDto("Match not found."));
+        }
+
+        _dbContext.Matches.Remove(matchInDb);
+        _dbContext.SaveChanges();
+
+        return Ok();
+    }
 }
