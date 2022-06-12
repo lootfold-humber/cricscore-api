@@ -62,6 +62,12 @@ public class MatchesController : Controller
         return Ok(_dbContext.Matches);
     }
 
+    [HttpGet("{id:int}/toss")]
+    public IActionResult GetTossForMatch([FromRoute] int id)
+    {
+        return Ok(_dbContext.Tosses.SingleOrDefault(t => t.MatchId == id));
+    }
+
     [HttpPost("{matchId:int}/start")]
     [CheckUserIdHeader]
     public IActionResult StartMatch([FromRoute] int matchId, [FromBody] Toss toss)
