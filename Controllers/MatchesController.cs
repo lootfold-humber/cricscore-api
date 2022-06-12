@@ -53,7 +53,7 @@ public class MatchesController : Controller
         _dbContext.Matches.Add(newMatch);
         _dbContext.SaveChanges();
 
-        return Created($"/matches/{newMatch.Id}", newMatch);
+        return Ok();
     }
 
     [HttpGet]
