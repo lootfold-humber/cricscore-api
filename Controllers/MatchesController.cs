@@ -94,6 +94,12 @@ public class MatchesController : Controller
             return BadRequest(new ErrorDto("Invalid toss decision."));
         }
 
+        var tossInDb = _dbContext.Tosses.SingleOrDefault(t => t.MatchId == matchId);
+        if (tossInDb != null)
+        {
+            _dbContext.Remove(tossInDb);
+        }
+
         toss.MatchId = matchId;
         _dbContext.Tosses.Add(toss);
         _dbContext.SaveChanges();
