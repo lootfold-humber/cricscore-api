@@ -1,5 +1,6 @@
 using System.Net;
 using CricScore.Controllers.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace CricScore.Exceptions;
 
@@ -28,6 +29,13 @@ public class ExceptionMiddleware
             {
                 errorDto.Message = e.Message;
                 statusCode = e.HttpStatusCode;
+            }
+
+            var dbEx = ex as DbUpdateException;
+            if (dbEx != null)
+            {
+                errorDto.Message = "SQL";
+                statusCode = 400;
             }
 
             httpContext.Response.StatusCode = statusCode;
