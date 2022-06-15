@@ -8,7 +8,6 @@ namespace CricScore.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[CheckUserIdHeader]
 public class TeamsController : Controller
 {
     private readonly CricScoreDbContext _dbContext;
@@ -19,6 +18,7 @@ public class TeamsController : Controller
     }
 
     [HttpPost]
+    [CheckUserIdHeader]
     public IActionResult AddTeam([FromBody] Team team)
     {
         var userId = HttpContext.Request.Headers["userId"].First();
@@ -38,6 +38,7 @@ public class TeamsController : Controller
     }
 
     [HttpGet]
+    [CheckUserIdHeader]
     public IActionResult GetAllForUser()
     {
         var userId = HttpContext.Request.Headers["userId"].First();
@@ -47,8 +48,17 @@ public class TeamsController : Controller
         return Ok(teams);
     }
 
+    [HttpGet("all")]
+    public IActionResult GetAll()
+    {
+        var teams = _dbContext.Teams;
+
+        return Ok(teams);
+    }
+
     [HttpDelete]
     [Route("{id:int}")]
+    [CheckUserIdHeader]
     public IActionResult DeleteTeamForUser([FromRoute] int id)
     {
         var userId = HttpContext.Request.Headers["userId"].First();
