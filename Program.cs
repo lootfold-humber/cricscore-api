@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CricScoreDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -21,6 +21,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var context = serviceScope
+                    .ServiceProvider
+                    .GetRequiredService<CricScoreDbContext>();
+    context.Database.Migrate();
 }
 
 app.UseExceptionMiddleware();
