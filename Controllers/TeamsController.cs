@@ -17,6 +17,11 @@ public class TeamsController : Controller
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Adds the team.
+    /// </summary>
+    /// <param name="team">The team.</param>
+    /// <returns></returns>
     [HttpPost]
     [CheckUserIdHeader]
     public IActionResult AddTeam([FromBody] Team team)
@@ -37,6 +42,10 @@ public class TeamsController : Controller
         return Created($"/teams/{team.Id}", team);
     }
 
+    /// <summary>
+    /// Gets all teams for user.
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     [CheckUserIdHeader]
     public IActionResult GetAllForUser()
@@ -48,6 +57,10 @@ public class TeamsController : Controller
         return Ok(teams);
     }
 
+    /// <summary>
+    /// Gets all teams
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("all")]
     public IActionResult GetAll()
     {
@@ -56,6 +69,11 @@ public class TeamsController : Controller
         return Ok(teams);
     }
 
+    /// <summary>
+    /// Deletes the team for user.
+    /// </summary>
+    /// <param name="id">The identifier.</param>
+    /// <returns></returns>
     [HttpDelete]
     [Route("{id:int}")]
     [CheckUserIdHeader]

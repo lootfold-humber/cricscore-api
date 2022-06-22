@@ -17,6 +17,12 @@ public class UsersController : Controller
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Signs up.
+    /// </summary>
+    /// <param name="user">The user.</param>
+    /// <returns></returns>
+    /// <exception cref="CricScore.Exceptions.ApiValidationException">Provided email already in use.</exception>
     [HttpPost]
     public IActionResult SignUp([FromBody] User user)
     {
@@ -32,6 +38,11 @@ public class UsersController : Controller
         return Created($"/users/{user.Id}", user);
     }
 
+    /// <summary>
+    /// Verifies login info
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <returns></returns>
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginDto dto)
     {
@@ -46,6 +57,11 @@ public class UsersController : Controller
         return Ok(userInDb);
     }
 
+    /// <summary>
+    /// Checks the email availability.
+    /// </summary>
+    /// <param name="email">The email.</param>
+    /// <returns></returns>
     [HttpGet("available")]
     public IActionResult CheckEmailAvailability([FromQuery] string email)
     {

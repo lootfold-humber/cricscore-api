@@ -17,6 +17,11 @@ public class MatchesController : Controller
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Schedules the match.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <returns></returns>
     [HttpPost]
     [CheckUserIdHeader]
     public IActionResult ScheduleMatch([FromBody] ScheduleMatchDto dto)
@@ -56,18 +61,33 @@ public class MatchesController : Controller
         return Ok();
     }
 
+    /// <summary>
+    /// Gets all matches.
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult GetAllMatches()
     {
         return Ok(_dbContext.Matches);
     }
 
+    /// <summary>
+    /// Gets the toss for match.
+    /// </summary>
+    /// <param name="id">The identifier.</param>
+    /// <returns></returns>
     [HttpGet("{id:int}/toss")]
     public IActionResult GetTossForMatch([FromRoute] int id)
     {
         return Ok(_dbContext.Tosses.SingleOrDefault(t => t.MatchId == id));
     }
 
+    /// <summary>
+    /// Starts the match.
+    /// </summary>
+    /// <param name="matchId">The match identifier.</param>
+    /// <param name="toss">The toss.</param>
+    /// <returns></returns>
     [HttpPost("{matchId:int}/start")]
     [CheckUserIdHeader]
     public IActionResult StartMatch([FromRoute] int matchId, [FromBody] Toss toss)
@@ -107,9 +127,15 @@ public class MatchesController : Controller
         return Ok();
     }
 
+    /// <summary>
+    /// Completes the match.
+    /// </summary>
+    /// <param name="matchId">The match identifier.</param>
+    /// <param name="completeMatchDto">The complete match dto.</param>
+    /// <returns></returns>
     [HttpPost("{matchId:int}/complete")]
     [CheckUserIdHeader]
-    public IActionResult StartMatch([FromRoute] int matchId, [FromBody] CompleteMatchDto completeMatchDto)
+    public IActionResult CompleteMatch([FromRoute] int matchId, [FromBody] CompleteMatchDto completeMatchDto)
     {
         var userId = HttpContext.Request.Headers["userId"].First();
 
@@ -133,6 +159,11 @@ public class MatchesController : Controller
         return Ok();
     }
 
+    /// <summary>
+    /// Deletes the match.
+    /// </summary>
+    /// <param name="matchId">The match identifier.</param>
+    /// <returns></returns>
     [HttpDelete("{matchId:int}")]
     [CheckUserIdHeader]
     public IActionResult DeleteMatch([FromRoute] int matchId)

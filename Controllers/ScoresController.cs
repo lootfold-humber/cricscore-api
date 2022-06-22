@@ -16,6 +16,11 @@ public class ScoresController : Controller
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Adds or update score.
+    /// </summary>
+    /// <param name="score">The score.</param>
+    /// <returns></returns>
     [HttpPost]
     public IActionResult AddUpdateScore([FromBody] Score score)
     {
@@ -40,6 +45,11 @@ public class ScoresController : Controller
         return Ok();
     }
 
+    /// <summary>
+    /// Gets the score for match.
+    /// </summary>
+    /// <param name="matchId">The match identifier.</param>
+    /// <returns></returns>
     [HttpGet("{matchId:int}")]
     public IActionResult GetScoreForMatch([FromRoute] int matchId)
     {
