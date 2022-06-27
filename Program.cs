@@ -23,6 +23,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+using (var serviceScope = app.Services.CreateScope())
+{
+    var context = serviceScope
+                    .ServiceProvider
+                    .GetRequiredService<CricScoreDbContext>();
+    context.Database.Migrate();
+}
+
 app.UseExceptionMiddleware();
 
 app.UseHttpsRedirection();
